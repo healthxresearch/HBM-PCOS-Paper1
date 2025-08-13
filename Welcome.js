@@ -8,7 +8,7 @@ const Welcome = ({ onStart }) => {
       {/* Header Section */}
       <div className="welcome-header">
         <h1>Welcome to the PCOS Wellness Survey</h1>
-        <p className="subtitle">Empowering women through personalized health insights</p>
+        <p className="subtitle">Empowering women through personalised health insights</p>
       </div>
 
       {/* Intro Section */}
@@ -27,11 +27,11 @@ const Welcome = ({ onStart }) => {
 
         {/* Why this matters */}
         <section className="welcome-benefits">
-          <p>This survey can help:</p>
+          <p>Your answers will help us:</p>
           <ul>
-            <li>Identify key behavioral barriers and motivators</li>
-            <li>Understand how women approach PCOS self-care</li>
-            <li>Design a tailored app that supports your wellness journey</li>
+            <li>Understand what makes health apps useful (or not) for women like you</li>
+            <li>Design better tools to support PCOS management</li>
+            <li>Empower women with personalized, tech-enabled care</li>
           </ul>
         </section>
 

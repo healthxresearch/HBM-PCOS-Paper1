@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PCOS Wellness Survey</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+    
+    <!-- React and Babel -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body>
+    <div id="root"></div>
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- React Component -->
+    <script type="text/babel">
+        const { useState } = React;
+
+        const PCOSWellnessSurvey = () => {
+            // State management
+            const [currentPage, setCurrentPage] = useState('welcome'); // 'welcome', 'questionnaire', 'thankyou'
+            const [responses, setResponses] = useState({});
+            const [currentSection, setCurrentSection] = useState(0);
+            const [consentGiven, setConsentGiven] = useState(false);
+
+            // Questionnaire sections
+            const sections = [
+                {
+                    title: "Section A: Demographic Information",
+                    questions: [
+                        { id: "age", text: "Age", type: "number", placeholder: "Enter your age" },
+                        { id: "marital_status", text: "Marital Status", type: "select", options: ["Single", "Married", "Divorced", "Widowed"] },
+                        { id: "education", text: "Education Level", type: "select", options: ["High School", "Bachelor's Degree", "Master's Degree", "PhD", "Other"] },
+                        { id: "employment", text: "Employment Status", type: "select", options: ["Employed", "Unemployed", "Self-employed", "Student", "Retired"] },
+                        { id: "income", text: "Monthly Household Income", type: "select", options: ["Below ₹20,000", "₹20,000-₹50,000", "₹50,000-₹1,00,000", "Above ₹1,00,000"] },
+                        { id: "residence", text: "Urban/Rural Residence", type: "radio", options: ["Urban", "Rural"] },
+                        { id: "region", text: "Region/State", type: "text", placeholder: "Enter your state/region" },
+                        { id: "occupation", text: "Occupation", type: "text", placeholder: "Enter your occupation" },
+                        { id: "student", text: "Are you currently a student?", type: "radio", options: ["Yes", "No"] },
+                        { id: "pcos_aware", text: "Are you aware of PCOS?", type: "radio", options: ["Yes", "No"] }
+                    ]
+                },
+                {
+                    title: "Section B: Health Status",
+                    questions: [
+                        { id: "height", text: "Height (cm)", type: "number", placeholder: "Enter height in cm" },
+                        { id: "weight", text: "Weight (kg)", type: "number", placeholder: "Enter weight in kg" },
+                        { id: "pcos_diagnosis", text: "Do you have a confirmed PCOS diagnosis?", type: "radio", options: ["Yes", "No"] },
+                        { id: "diagnosis_age", text: "At what age were you diagnosed (if yes)?", type: "number", placeholder: "Enter age at diagnosis" },
+                        { id: "irregular_periods", text: "Do you experience irregular periods?", type: "radio", options: ["Yes", "No"] },
+                        { id: "symptoms", text: "Do you experience acne, hair thinning, or excess facial/body hair?", type: "radio", options: ["Yes", "No"] },
+                        { id: "medications", text: "Do you currently take any medications for PCOS?", type: "radio", options: ["Yes", "No"] },
+                        { id: "doctor_visit", text: "Have you consulted a gynecologist or endocrinologist in the past year?", type: "radio", options: ["Yes", "No"] },
+                        { id: "tracking_app", text: "Do you track your periods or symptoms using any app?", type: "radio", options: ["Yes", "No"] },
+                        { id: "other_conditions", text: "Do you have any other health conditions?", type: "select", options: ["Diabetes", "Thyroid", "Obesity", "None", "Multiple conditions"] }
+                    ]
+                },
+                {
+                    title: "Section C: Lifestyle Information",
+                    questions: [
+                        { id: "exercise", text: "How often do you exercise in a week?", type: "select", options: ["Never", "1–2 days", "3–5 days", "Daily"] },
+                        { id: "sleep", text: "On average, how many hours do you sleep daily?", type: "number", placeholder: "Enter hours of sleep" },
+                        { id: "diet_rating", text: "How would you rate your diet?", type: "select", options: ["Poor", "Fair", "Good", "Excellent"] },
+                        { id: "junk_food", text: "How often do you consume junk food or sugar-rich items?", type: "select", options: ["Never", "Rarely", "Sometimes", "Often", "Daily"] },
+                        { id: "smoke_alcohol", text: "Do you smoke or consume alcohol?", type: "radio", options: ["Yes", "No"] },
+                        { id: "stress", text: "Do you feel stressed regularly?", type: "select", options: ["Rarely", "Sometimes", "Often", "Always"] },
+                        { id: "meditation", text: "Do you meditate or practice stress-relief techniques?", type: "radio", options: ["Yes", "No"] },
+                        { id: "diet_type", text: "Do you follow any specific diet?", type: "select", options: ["Keto", "Low-carb", "Ayurvedic", "Balanced", "None"] },
+                        { id: "water_intake", text: "How many glasses of water do you drink per day?", type: "number", placeholder: "Enter number of glasses" },
+                        { id: "lifestyle_management", text: "Are you currently trying to manage your PCOS through lifestyle change?", type: "radio", options: ["Yes", "No"] }
+                    ]
+                },
+                {
+                    title: "Section D: Behavioral Questions",
+                    questions: [
+                        { id: "risk_worsening", text: "I believe I am at risk of worsening my PCOS symptoms without lifestyle change.", type: "likert" },
+                        { id: "fertility_concern", text: "PCOS might affect my fertility or reproductive health in the future.", type: "likert" },
+                        { id: "ignore_consequences", text: "If I ignore my PCOS symptoms now, they might become serious later.", type: "likert" },
+                        { id: "longterm_problems", text: "Without proper management, PCOS might cause long-term health problems.", type: "likert" },
+                        { id: "lifestyle_impact", text: "My personal lifestyle increases my chances of worsening PCOS.", type: "likert" },
+                        { id: "app_effectiveness", text: "Using a mobile app can help me manage my PCOS effectively.", type: "likert" },
+                        { id: "tracking_helps", text: "Tracking symptoms and health data helps me stay consistent.", type: "likert" },
+                        { id: "app_motivation", text: "Mobile apps can motivate me to follow a healthier lifestyle.", type: "likert" },
+                        { id: "app_access", text: "Apps can simplify access to relevant information on PCOS.", type: "likert" },
+                        { id: "self_monitoring", text: "Self-monitoring can improve my awareness and confidence in managing PCOS.", type: "likert" },
+                        { id: "no_time", text: "I don't have time to use a health-tracking app regularly.", type: "likert" },
+                        { id: "too_complicated", text: "I find health apps too complicated to use consistently.", type: "likert" },
+                        { id: "privacy_concern", text: "I am concerned about privacy of my health data in apps.", type: "likert" },
+                        { id: "lose_motivation", text: "I might lose motivation to use the app after a while.", type: "likert" },
+                        { id: "digital_skepticism", text: "I don't believe digital solutions can help much with PCOS.", type: "likert" },
+                        { id: "doctor_recommendation", text: "If a doctor recommends an app, I would likely try it.", type: "likert" },
+                        { id: "social_media", text: "Social media posts on PCOS often motivate me to learn more.", type: "likert" },
+                        { id: "peer_influence", text: "Seeing others manage PCOS with apps encourages me to try too.", type: "likert" },
+                        { id: "reminders_help", text: "I am more likely to act if I get reminders or alerts.", type: "likert" },
+                        { id: "educational_content", text: "Educational content about PCOS encourages me to take action.", type: "likert" },
+                        { id: "confident_management", text: "I am confident I can manage my PCOS with support.", type: "likert" },
+                        { id: "follow_through", text: "I can follow through with lifestyle changes if guided well.", type: "likert" },
+                        { id: "app_capability", text: "I feel capable of using a health app regularly.", type: "likert" },
+                        { id: "take_charge", text: "I can take charge of my PCOS management.", type: "likert" },
+                        { id: "maintain_habits", text: "Even if it's difficult, I believe I can maintain healthy habits.", type: "likert" }
+                    ]
+                }
+            ];
+
+            // Likert scale options
+            const likertOptions = [
+                { value: 1, label: "Strongly Disagree" },
+                { value: 2, label: "Disagree" },
+                { value: 3, label: "Neutral" },
+                { value: 4, label: "Agree" },
+                { value: 5, label: "Strongly Agree" }
+            ];
+
+            // Handle response change
+            const handleResponseChange = (questionId, value) => {
+                setResponses(prev => ({
+                    ...prev,
+                    [questionId]: value
+                }));
+            };
+
+            // Calculate progress
+            const getTotalQuestions = () => {
+                return sections.reduce((total, section) => total + section.questions.length, 0);
+            };
+
+            const getAnsweredQuestions = () => {
+                return Object.keys(responses).length;
+            };
+
+            // Check if current section is complete
+            const isSectionComplete = (sectionIndex) => {
+                const section = sections[sectionIndex];
+                return section.questions.every(q => responses[q.id] !== undefined);
+            };
+
+            // Check if all questions are answered
+            const isAllQuestionsAnswered = () => {
+                return getAnsweredQuestions() === getTotalQuestions();
+            };
+
+            // Handle form submission
+            const handleSubmit = (e) => {
+                e.preventDefault();
+                
+                if (!isAllQuestionsAnswered()) {
+                    alert('Please answer all questions before submitting.');
+                    return;
+                }
+
+                // Log responses to console
+                console.log('PCOS Wellness Survey Responses:', responses);
+                
+                // Show thank you message
+                setCurrentPage('thankyou');
+                
+                // Scroll to top to show thank you message
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            };
+
+            // Start survey
+            const startSurvey = () => {
+                if (!consentGiven) {
+                    alert('Please provide your consent to participate in the study.');
+                    return;
+                }
+                setCurrentPage('questionnaire');
+            };
+
+            // Navigate sections
+            const nextSection = () => {
+                if (currentSection < sections.length - 1) {
+                    setCurrentSection(currentSection + 1);
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            };
+
+            const prevSection = () => {
+                if (currentSection > 0) {
+                    setCurrentSection(currentSection - 1);
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            };
+
+            // Render question based on type
+            const renderQuestion = (question) => {
+                const value = responses[question.id] || '';
+
+                switch (question.type) {
+                    case 'text':
+                    case 'number':
+                        return (
+                            <input
+                                type={question.type}
+                                className="form-control"
+                                placeholder={question.placeholder}
+                                value={value}
+                                onChange={(e) => handleResponseChange(question.id, e.target.value)}
+                            />
+                        );
+
+                    case 'select':
+                        return (
+                            <select
+                                className="form-select"
+                                value={value}
+                                onChange={(e) => handleResponseChange(question.id, e.target.value)}
+                            >
+                                <option value="">Select an option</option>
+                                {question.options.map((option, index) => (
+                                    <option key={index} value={option}>{option}</option>
+                                ))}
+                            </select>
+                        );
+
+                    case 'radio':
+                        return (
+                            <div className="radio-group">
+                                {question.options.map((option, index) => (
+                                    <div key={index} className="form-check form-check-inline">
+                                        <input
+                                            className="form-check-input"
+                                            type="radio"
+                                            id={`${question.id}_${index}`}
+                                            name={question.id}
+                                            value={option}
+                                            checked={value === option}
+                                            onChange={(e) => handleResponseChange(question.id, e.target.value)}
+                                        />
+                                        <label className="form-check-label" htmlFor={`${question.id}_${index}`}>
+                                            {option}
+                                        </label>
+                                    </div>
+                                ))}
+                            </div>
+                        );
+
+                    case 'likert':
+                        return (
+                            <div className="likert-scale">
+                                {likertOptions.map((option) => (
+                                    <div key={option.value} className="likert-option">
+                                        <input
+                                            type="radio"
+                                            id={`${question.id}_${option.value}`}
+                                            name={question.id}
+                                            value={option.value}
+                                            checked={parseInt(value) === option.value}
+                                            onChange={(e) => handleResponseChange(question.id, parseInt(e.target.value))}
+                                        />
+                                        <label htmlFor={`${question.id}_${option.value}`}>
+                                            {option.label}
+                                        </label>
+                                    </div>
+                                ))}
+                            </div>
+                        );
+
+                    default:
+                        return null;
+                }
+            };
+
+            // Welcome Page
+            if (currentPage === 'welcome') {
+                return (
+                    <div className="welcome-container">
+                        <div className="welcome-header">
+                            <h1>Welcome to the PCOS Wellness Survey</h1>
+                        </div>
+                        
+                        <div className="welcome-content">
+                            <p className="welcome-intro">
+                                This quick 10-minute questionnaire is part of a research study exploring how women perceive and use mobile health (mHealth) apps for managing PCOS (Polycystic Ovary Syndrome).
+                            </p>
+                            
+                            <p className="welcome-definition">
+                                mHealth apps are mobile applications that help individuals track, manage, and improve their health through smartphones or tablets.
+                            </p>
+                            
+                            <div className="welcome-benefits">
+                                <p><strong>Your answers will help us:</strong></p>
+                                <ul>
+                                    <li>Understand what makes health apps useful (or not) for women like you</li>
+                                    <li>Design better tools to support PCOS management</li>
+                                    <li>Empower women with personalized, tech-enabled care</li>
+                                </ul>
+                            </div>
+                            
+                            <p className="welcome-disclaimer">
+                                This is not a diagnostic test, and all responses are confidential and anonymous.
+                            </p>
+                            
+                            <div className="consent-section">
+                                <div className="form-check">
+                                    <input
+                                        className="form-check-input"
+                                        type="checkbox"
+                                        id="consent"
+                                        checked={consentGiven}
+                                        onChange={(e) => setConsentGiven(e.target.checked)}
+                                    />
+                                    <label className="form-check-label consent-label" htmlFor="consent">
+                                        I consent to participate in this voluntary research study
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div className="start-button-section">
+                                <button 
+                                    className="start-survey-btn"
+                                    onClick={startSurvey}
+                                    disabled={!consentGiven}
+                                >
+                                    Start Survey
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                );
+            }
+
+            // Thank You Page
+            if (currentPage === 'thankyou') {
+                return (
+                    <div className="questionnaire-container">
+                        <div className="thank-you-message">
+                            <h3>🎉 Thank You for Your Participation!</h3>
+                            <p>Your responses have been successfully submitted and will contribute to important research on PCOS management and mobile health applications.</p>
+                            <p>We appreciate the time you took to share your experiences and insights with us.</p>
+                        </div>
+                    </div>
+                );
+            }
+
+            // Questionnaire Page
+            const currentSectionData = sections[currentSection];
+
+            return (
+                <div className="questionnaire-container">
+                    {/* Header */}
+                    <div className="questionnaire-header">
+                        <h1>PCOS Wellness Survey</h1>
+                        <p>Please complete all sections to help us understand your PCOS experience and needs.</p>
+                    </div>
+
+                    {/* Section Navigation */}
+                    <div className="section-navigation">
+                        {sections.map((section, index) => (
+                            <button
+                                key={index}
+                                className={`section-nav-btn ${index === currentSection ? 'active' : ''} ${isSectionComplete(index) ? 'completed' : ''}`}
+                                onClick={() => setCurrentSection(index)}
+                            >
+                                {section.title}
+                                {isSectionComplete(index) && <span className="checkmark">✓</span>}
+                            </button>
+                        ))}
+                    </div>
+
+                    {/* Current Section */}
+                    <div className="section-container">
+                        <h2 className="section-title">{currentSectionData.title}</h2>
+                        
+                        <form onSubmit={handleSubmit}>
+                            {currentSectionData.questions.map((question, index) => (
+                                <div key={question.id} className="question-card">
+                                    <div className="question-text">
+                                        <span className="question-number">{index + 1}</span>
+                                        {question.text}
+                                        {question.type === 'number' && question.id.includes('age') && responses.pcos_diagnosis === 'No' && question.id === 'diagnosis_age' ? 
+                                            <span className="text-muted"> (Skip if not diagnosed)</span> : null}
+                                    </div>
+                                    
+                                    <div className="question-input">
+                                        {renderQuestion(question)}
+                                    </div>
+                                </div>
+                            ))}
+
+                            {/* Navigation Buttons */}
+                            <div className="section-navigation-buttons">
+                                {currentSection > 0 && (
+                                    <button 
+                                        type="button" 
+                                        className="btn btn-secondary"
+                                        onClick={prevSection}
+                                    >
+                                        Previous Section
+                                    </button>
+                                )}
+                                
+                                {currentSection < sections.length - 1 ? (
+                                    <button 
+                                        type="button" 
+                                        className="btn btn-primary"
+                                        onClick={nextSection}
+                                        disabled={!isSectionComplete(currentSection)}
+                                    >
+                                        Next Section
+                                    </button>
+                                ) : (
+                                    <button 
+                                        type="submit" 
+                                        className="submit-btn"
+                                        disabled={!isAllQuestionsAnswered()}
+                                    >
+                                        {isAllQuestionsAnswered() ? 'Submit Survey' : `Complete ${getTotalQuestions() - getAnsweredQuestions()} more questions`}
+                                    </button>
+                                )}
+                            </div>
+
+                            {!isAllQuestionsAnswered() && currentSection === sections.length - 1 && (
+                                <p className="mt-3 text-muted text-center">
+                                    Please complete all sections to submit the survey.
+                                </p>
+                            )}
+                        </form>
+                    </div>
+                </div>
+            );
+        };
+
+        // Render the component
+        ReactDOM.render(<PCOSWellnessSurvey />, document.getElementById('root'));
+    </script>
+</body>
+</html>

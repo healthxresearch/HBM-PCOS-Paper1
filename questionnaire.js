@@ -1,8 +1,13 @@
-const { useState } = React;
+import React, { useState } from 'react';
+import './styles.css';
 
 const PCODQuestionnaire = () => {
-    // Array of 26 questions
-    const questions = [
+    const [currentSection, setCurrentSection] = useState(0);
+    const [responses, setResponses] = useState({});
+    const [isSubmitted, setIsSubmitted] = useState(false);
+    const [pcosDiagnosis, setPcosDiagnosis] = useState(null);
+
+    const hbmQuestions = [
         "I believe I am at risk of developing PCOD.",
         "My lifestyle may increase my chances of getting PCOD.",
         "PCOD can lead to serious long-term health problems.",
@@ -31,7 +36,6 @@ const PCODQuestionnaire = () => {
         "I feel inspired by public figures or movements promoting women's health."
     ];
 
-    // Likert scale options
     const scaleOptions = [
         { value: 1, label: "Strongly Disagree" },
         { value: 2, label: "Disagree" },
@@ -40,67 +44,75 @@ const PCODQuestionnaire = () => {
         { value: 5, label: "Strongly Agree" }
     ];
 
-    // State to store responses
-    const [responses, setResponses] = useState({});
-    const [isSubmitted, setIsSubmitted] = useState(false);
+    const sections = [
+        {
+            title: "About You",
+            questions: [
+                { id: "age", text: "What is your age?", type: "number" },
+                { id: "education", text: "What is your highest education level?", type: "text" },
+                { id: "maritalStatus", text: "Marital Status", type: "select", options: ["Single", "Married", "Other"] },
+                { id: "location", text: "Which city/state do you live in?", type: "text" },
+            ]
+        },
+        {
+            title: "Health Details",
+            questions: [
+                { id: "height", text: "Your height (in cm)", type: "number" },
+                { id: "weight", text: "Your weight (in kg)", type: "number" },
+                { id: "pcosDiagnosed", text: "Have you been diagnosed with PCOS?", type: "select", options: ["Yes", "No", "Not Sure"] },
+                { id: "menstrualCycle", text: "Is your menstrual cycle regular?", type: "select", options: ["Yes", "No", "Sometimes"] },
+            ]
+        },
+        {
+            title: "Daily Habits",
+            questions: [
+                { id: "exercise", text: "How many days a week do you exercise?", type: "number" },
+                { id: "diet", text: "How would you describe your diet?", type: "select", options: ["Healthy", "Moderate", "Unhealthy"] },
+                { id: "screenTime", text: "Average screen time per day (in hours)", type: "number" },
+                { id: "sleep", text: "Average sleep per night (in hours)", type: "number" },
+            ]
+        },
+        {
+            title: "Beliefs & Perceptions",
+            questions: hbmQuestions.map((text, i) => ({
+                id: `hbm_q${i + 1}`,
+                text,
+                type: "likert"
+            }))
+        }
+    ];
 
-    // Handle response change
     const handleResponseChange = (questionId, value) => {
         setResponses(prev => ({
             ...prev,
-            [questionId]: parseInt(value)
+            [questionId]: value
         }));
+
+        if (questionId === "pcosDiagnosed") {
+            setPcosDiagnosis(value);
+        }
     };
 
-    // Calculate progress
-    const getProgress = () => {
-        const answeredQuestions = Object.keys(responses).length;
-        return (answeredQuestions / questions.length) * 100;
-    };
-
-    // Check if all questions are answered
-    const isAllQuestionsAnswered = () => {
-        return Object.keys(responses).length === questions.length;
-    };
-
-    // Handle form submission
     const handleSubmit = (e) => {
         e.preventDefault();
-        
-        if (!isAllQuestionsAnswered()) {
-            alert('Please answer all questions before submitting.');
-            return;
-        }
-
-        // Log responses to console
-        console.log('PCOD Questionnaire Responses:', responses);
-        
-        // Show thank you message
+        console.log("Survey Responses:", responses);
         setIsSubmitted(true);
-        
-        // Scroll to top to show thank you message
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
-    // Reset questionnaire
-    const resetQuestionnaire = () => {
-        setResponses({});
-        setIsSubmitted(false);
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    };
+    const goToNextSection = () => setCurrentSection(prev => prev + 1);
+    const goToPreviousSection = () => setCurrentSection(prev => prev - 1);
+
+    const current = sections[currentSection];
 
     if (isSubmitted) {
         return (
-            <div className="questionnaire-container">
+            <div className="questionnaire-container fade-in">
                 <div className="thank-you-message">
                     <h3>🎉 Thank You!</h3>
                     <p>Your responses have been successfully submitted and logged to the console.</p>
-                    <p>Thank you for participating in the PCOD Behavioral Questionnaire.</p>
-                    <button 
-                        className="btn btn-light mt-3"
-                        onClick={resetQuestionnaire}
-                    >
-                        Take Survey Again
+                    <button className="btn btn-light mt-3" onClick={() => window.location.reload()}>
+                        Take Again
                     </button>
                 </div>
             </div>
@@ -108,75 +120,61 @@ const PCODQuestionnaire = () => {
     }
 
     return (
-        <div className="questionnaire-container">
-            {/* Header */}
-            <div className="questionnaire-header">
-                <h1>PCOD Behavioral Questionnaire</h1>
-                <p>Please rate each statement based on how much you agree or disagree with it.</p>
-            </div>
-
-            {/* Progress Bar */}
-            <div className="progress-text">
-                Progress: {Object.keys(responses).length} of {questions.length} questions answered
-            </div>
-            <div className="progress-bar">
-                <div 
-                    className="progress-fill" 
-                    style={{ width: `${getProgress()}%` }}
-                ></div>
-            </div>
-
-            {/* Questionnaire Form */}
+        <div className="questionnaire-container fade-in">
+            <h2>{current.title}</h2>
             <form onSubmit={handleSubmit}>
-                {questions.map((question, index) => {
-                    const questionId = index + 1;
+                {current.questions.map(q => {
+                    if (q.id === "menstrualCycle" && pcosDiagnosis !== "Yes") {
+                        return null;
+                    }
+
                     return (
-                        <div key={questionId} className="question-card">
-                            <div className="question-text">
-                                <span className="question-number">{questionId}</span>
-                                {question}
-                            </div>
-                            
-                            <div className="likert-scale">
-                                {scaleOptions.map((option) => (
-                                    <div key={option.value} className="likert-option">
-                                        <input
-                                            type="radio"
-                                            id={`q${questionId}_${option.value}`}
-                                            name={`question_${questionId}`}
-                                            value={option.value}
-                                            checked={responses[questionId] === option.value}
-                                            onChange={(e) => handleResponseChange(questionId, e.target.value)}
-                                        />
-                                        <label htmlFor={`q${questionId}_${option.value}`}>
-                                            {option.label}
+                        <div key={q.id} className="question-card">
+                            <label>{q.text}</label>
+                            {q.type === "text" || q.type === "number" ? (
+                                <input
+                                    type={q.type}
+                                    value={responses[q.id] || ""}
+                                    onChange={(e) => handleResponseChange(q.id, e.target.value)}
+                                />
+                            ) : q.type === "select" ? (
+                                <select
+                                    value={responses[q.id] || ""}
+                                    onChange={(e) => handleResponseChange(q.id, e.target.value)}
+                                >
+                                    <option value="">Select</option>
+                                    {q.options.map(opt => (
+                                        <option key={opt} value={opt}>{opt}</option>
+                                    ))}
+                                </select>
+                            ) : q.type === "likert" ? (
+                                <div className="likert-scale">
+                                    {scaleOptions.map(opt => (
+                                        <label key={opt.value}>
+                                            <input
+                                                type="radio"
+                                                name={q.id}
+                                                value={opt.value}
+                                                checked={responses[q.id] === String(opt.value)}
+                                                onChange={(e) => handleResponseChange(q.id, e.target.value)}
+                                            />
+                                            {opt.label}
                                         </label>
-                                    </div>
-                                ))}
-                            </div>
-                            
-                            <div className="scale-labels">
-                                <span>1 - Strongly Disagree</span>
-                                <span>5 - Strongly Agree</span>
-                            </div>
+                                    ))}
+                                </div>
+                            ) : null}
                         </div>
                     );
                 })}
 
-                {/* Submit Section */}
-                <div className="submit-section">
-                    <button 
-                        type="submit" 
-                        className="submit-btn"
-                        disabled={!isAllQuestionsAnswered()}
-                    >
-                        {isAllQuestionsAnswered() ? 'Submit Questionnaire' : `Answer ${questions.length - Object.keys(responses).length} more questions`}
-                    </button>
-                    
-                    {!isAllQuestionsAnswered() && (
-                        <p className="mt-3 text-muted">
-                            Please answer all questions to submit the questionnaire.
-                        </p>
+                <div className="navigation-buttons">
+                    {currentSection > 0 && (
+                        <button type="button" onClick={goToPreviousSection}>Back</button>
+                    )}
+                    {currentSection < sections.length - 1 ? (
+                        <button type="button" onClick={goToNextSection}>Next</button>
+                    ) : (
+                        <button type="submit">Submit</button>
                     )}
                 </div>
             </form>
@@ -184,5 +182,4 @@ const PCODQuestionnaire = () => {
     );
 };
 
-// Render the component
-ReactDOM.render(<PCODQuestionnaire />, document.getElementById('root'));
+export default PCODQuestionnaire;

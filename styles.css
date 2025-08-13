@@ -1,131 +1,69 @@
-/* Custom styles for PCOS Wellness Survey */
 
+/* Global Styles */
 body {
-    background-color: #f8f9fa;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #f4f9f6;
+    color: #333;
+    margin: 0;
+    padding: 0;
 }
 
-/* Welcome Page Styles */
+/* Animations */
+.fade-in {
+    animation: fadeIn 0.8s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Welcome Page */
 .welcome-container {
     max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-}
-
-.welcome-header {
-    text-align: center;
-    margin-bottom: 40px;
-    padding: 40px 30px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    margin: 40px auto;
+    padding: 30px;
+    background-color: #eafaf1;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
 }
 
 .welcome-header h1 {
-    font-size: 2.8rem;
-    font-weight: 700;
-    margin-bottom: 0;
-    line-height: 1.2;
+    color: #52796f;
+    margin-bottom: 10px;
 }
 
-.welcome-content {
-    background: white;
-    border-radius: 15px;
-    padding: 40px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-    border: 1px solid #e9ecef;
+.subtitle {
+    font-size: 1.1em;
+    color: #6a7d8b;
+    margin-bottom: 20px;
 }
 
-.welcome-intro {
-    font-size: 1.2rem;
+.welcome-content p,
+.welcome-definition,
+.welcome-benefits,
+.welcome-disclaimer {
+    margin-bottom: 20px;
     line-height: 1.6;
-    color: #2c3e50;
-    margin-bottom: 25px;
 }
 
-.welcome-definition {
-    font-size: 1.1rem;
-    line-height: 1.6;
-    color: #495057;
-    margin-bottom: 30px;
-    padding: 20px;
-    background: #f8f9fa;
-    border-left: 4px solid #667eea;
-    border-radius: 8px;
-}
-
-.welcome-benefits {
-    margin-bottom: 30px;
-}
-
-.welcome-benefits p {
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: #2c3e50;
-    margin-bottom: 15px;
+.welcome-definition strong {
+    color: #5d5fef;
 }
 
 .welcome-benefits ul {
-    list-style: none;
-    padding-left: 0;
+    padding-left: 20px;
 }
 
 .welcome-benefits li {
-    font-size: 1rem;
-    line-height: 1.6;
-    color: #495057;
-    margin-bottom: 10px;
-    padding-left: 25px;
-    position: relative;
+    margin-bottom: 8px;
 }
 
-.welcome-benefits li:before {
-    content: "•";
-    color: #667eea;
-    font-weight: bold;
-    position: absolute;
-    left: 0;
-    font-size: 1.2rem;
-}
-
-.welcome-disclaimer {
-    font-size: 1rem;
-    line-height: 1.6;
-    color: #6c757d;
-    margin-bottom: 35px;
-    font-style: italic;
-    text-align: center;
-    padding: 15px;
-    background: #fff3cd;
-    border: 1px solid #ffeaa7;
-    border-radius: 8px;
-}
-
-.consent-section {
-    margin-bottom: 35px;
-    padding: 25px;
-    background: #f8f9fa;
-    border-radius: 12px;
-    border: 2px solid #e9ecef;
-}
-
-.consent-label {
-    font-size: 1.1rem;
-    font-weight: 500;
-    color: #2c3e50;
-    cursor: pointer;
-    margin-left: 10px;
-}
-
-.form-check-input:checked {
-    background-color: #667eea;
-    border-color: #667eea;
-}
-
-.form-check-input {
-    width: 1.2em;
-    height: 1.2em;
+.checkbox-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 25px;
 }
 
 .start-button-section {
@@ -133,478 +71,126 @@ body {
 }
 
 .start-survey-btn {
-    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    background-color: #84a59d;
+    color: white;
     border: none;
-    padding: 18px 50px;
-    font-size: 1.3rem;
-    font-weight: 600;
-    border-radius: 50px;
-    color: white;
+    padding: 12px 28px;
+    border-radius: 6px;
+    font-size: 16px;
     cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 6px 20px rgba(40, 167, 69, 0.3);
-    text-transform: uppercase;
-    letter-spacing: 1px;
+    transition: background-color 0.3s;
 }
 
-.start-survey-btn:hover:not(:disabled) {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 30px rgba(40, 167, 69, 0.4);
+.start-survey-btn:hover {
+    background-color: #52796f;
 }
 
-.start-survey-btn:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-    transform: none;
-    background: #6c757d;
-    box-shadow: 0 4px 15px rgba(108, 117, 125, 0.3);
-}
-
+/* Questionnaire */
 .questionnaire-container {
-    max-width: 1000px;
-    margin: 0 auto;
-    padding: 20px;
-}
-
-.questionnaire-header {
-    text-align: center;
-    margin-bottom: 40px;
+    max-width: 800px;
+    margin: 40px auto;
     padding: 30px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-}
-
-.questionnaire-header h1 {
-    font-size: 2.5rem;
-    font-weight: 700;
-    margin-bottom: 10px;
-}
-
-.questionnaire-header p {
-    font-size: 1.1rem;
-    opacity: 0.9;
-    margin-bottom: 0;
-}
-
-.progress-text {
-    text-align: center;
-    margin-bottom: 10px;
-    color: #6c757d;
-    font-size: 0.9rem;
-    font-weight: 500;
-}
-
-.progress-bar {
-    background: #e9ecef;
-    height: 8px;
-    border-radius: 4px;
-    margin-bottom: 30px;
-    overflow: hidden;
-}
-
-.progress-fill {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    height: 100%;
-    transition: width 0.3s ease;
-    border-radius: 4px;
-}
-
-/* Section Navigation */
-.section-navigation {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-bottom: 30px;
-    justify-content: center;
-}
-
-.section-nav-btn {
-    background: #f8f9fa;
-    border: 2px solid #e9ecef;
-    padding: 12px 20px;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    font-size: 0.9rem;
-    font-weight: 500;
-    color: #495057;
-    position: relative;
-}
-
-.section-nav-btn:hover {
-    background: #e3f2fd;
-    border-color: #2196f3;
-    transform: translateY(-1px);
-}
-
-.section-nav-btn.active {
-    background: #667eea;
-    border-color: #667eea;
-    color: white;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
-}
-
-.section-nav-btn.completed {
-    background: #d4edda;
-    border-color: #28a745;
-    color: #155724;
-}
-
-.section-nav-btn.completed.active {
-    background: #28a745;
-    border-color: #28a745;
-    color: white;
-}
-
-.checkmark {
-    margin-left: 8px;
-    font-weight: bold;
-}
-
-/* Section Container */
-.section-container {
-    background: white;
-    border-radius: 15px;
-    padding: 30px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-    border: 1px solid #e9ecef;
-}
-
-.section-title {
-    color: #2c3e50;
-    font-size: 1.8rem;
-    font-weight: 600;
-    margin-bottom: 30px;
-    text-align: center;
-    padding-bottom: 15px;
-    border-bottom: 2px solid #e9ecef;
-}
-
-/* Question Cards */
-.question-card {
-    background: #f8f9fa;
+    background-color: #fff7fb;
     border-radius: 12px;
-    padding: 25px;
-    margin-bottom: 20px;
-    border: 1px solid #e9ecef;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.07);
 }
 
-.question-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(0,0,0,0.12);
-    background: white;
-}
-
-.question-number {
-    display: inline-block;
-    background: #667eea;
-    color: white;
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
+.questionnaire-container h2 {
+    color: #7c4dff;
+    margin-bottom: 25px;
     text-align: center;
-    line-height: 30px;
-    font-weight: bold;
-    margin-right: 15px;
-    font-size: 0.9rem;
 }
 
-.question-text {
-    font-size: 1.1rem;
-    font-weight: 500;
-    color: #2c3e50;
+/* Question Card */
+.question-card {
+    background-color: #f0f7f5;
+    padding: 20px;
+    border-radius: 10px;
     margin-bottom: 20px;
-    line-height: 1.6;
 }
 
-.question-input {
-    margin-top: 15px;
+.question-card label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 10px;
 }
 
-/* Form Controls */
-.form-control, .form-select {
-    border: 2px solid #e9ecef;
-    border-radius: 8px;
-    padding: 12px 15px;
-    font-size: 1rem;
-    transition: all 0.3s ease;
-}
-
-.form-control:focus, .form-select:focus {
-    border-color: #667eea;
-    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
-}
-
-/* Radio Groups */
-.radio-group {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
-}
-
-.form-check-inline {
-    margin-right: 20px;
-}
-
-.form-check-input:checked {
-    background-color: #667eea;
-    border-color: #667eea;
-}
-
-.form-check-label {
-    font-weight: 500;
-    color: #495057;
-    cursor: pointer;
+/* Inputs and Selects */
+.question-card input[type="text"],
+.question-card input[type="number"],
+.question-card select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background-color: #fff;
 }
 
 /* Likert Scale */
 .likert-scale {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.likert-scale label {
+    display: flex;
     align-items: center;
-    gap: 15px;
-    flex-wrap: wrap;
-}
-
-.likert-option {
-    flex: 1;
-    min-width: 140px;
-    text-align: center;
-}
-
-.likert-option input[type="radio"] {
-    display: none;
-}
-
-.likert-option label {
-    display: block;
-    padding: 12px 8px;
-    background: #f8f9fa;
-    border: 2px solid #e9ecef;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    font-size: 0.9rem;
-    font-weight: 500;
-    color: #495057;
-}
-
-.likert-option label:hover {
-    background: #e3f2fd;
-    border-color: #2196f3;
-    transform: translateY(-1px);
-}
-
-.likert-option input[type="radio"]:checked + label {
-    background: #667eea;
-    border-color: #667eea;
-    color: white;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+    gap: 10px;
+    background-color: #f4f0ff;
+    padding: 8px 12px;
+    border-radius: 6px;
 }
 
 /* Navigation Buttons */
-.section-navigation-buttons {
+.navigation-buttons {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    margin-top: 40px;
-    padding-top: 30px;
-    border-top: 2px solid #e9ecef;
+    margin-top: 30px;
 }
 
-.btn {
-    padding: 12px 30px;
-    font-size: 1rem;
-    font-weight: 600;
-    border-radius: 50px;
-    transition: all 0.3s ease;
+.navigation-buttons button {
+    background-color: #6c63ff;
+    color: #fff;
+    padding: 10px 22px;
+    font-size: 15px;
     border: none;
-}
-
-.btn-primary {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
-}
-
-.btn-primary:hover:not(:disabled) {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
-}
-
-.btn-secondary {
-    background: #6c757d;
-    color: white;
-    box-shadow: 0 4px 15px rgba(108, 117, 125, 0.3);
-}
-
-.btn-secondary:hover {
-    background: #5a6268;
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(108, 117, 125, 0.4);
-}
-
-.submit-btn {
-    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
-    border: none;
-    padding: 15px 40px;
-    font-size: 1.1rem;
-    font-weight: 600;
-    border-radius: 50px;
-    color: white;
+    border-radius: 6px;
     cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
 }
 
-.submit-btn:hover:not(:disabled) {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(40, 167, 69, 0.4);
-}
-
-.submit-btn:disabled, .btn:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-    transform: none;
+.navigation-buttons button:hover {
+    background-color: #5a54e6;
 }
 
 /* Thank You Message */
 .thank-you-message {
-    background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
-    color: white;
-    padding: 40px;
-    border-radius: 15px;
     text-align: center;
-    margin-top: 20px;
-    box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+    padding: 40px 20px;
+    background-color: #f0fff4;
+    border-radius: 10px;
 }
 
 .thank-you-message h3 {
-    margin-bottom: 20px;
-    font-size: 2rem;
+    font-size: 24px;
+    color: #009688;
+    margin-bottom: 15px;
 }
 
 .thank-you-message p {
-    font-size: 1.1rem;
-    margin-bottom: 15px;
-    opacity: 0.9;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-    .questionnaire-header h1 {
-        font-size: 2rem;
-    }
-    
-    .questionnaire-header p {
-        font-size: 1rem;
-    }
-    
-    .section-container {
-        padding: 20px;
-    }
-    
-    .question-card {
-        padding: 20px;
-    }
-    
-    .likert-scale {
-        flex-direction: column;
-        gap: 10px;
-    }
-    
-    .likert-option {
-        min-width: 100%;
-    }
-    
-    .radio-group {
-        flex-direction: column;
-        gap: 10px;
-    }
-    
-    .section-navigation {
-        flex-direction: column;
-    }
-    
-    .section-nav-btn {
-        width: 100%;
-        text-align: center;
-    }
-    
-    .section-navigation-buttons {
-        flex-direction: column;
-        gap: 15px;
-    }
-    
-    .section-navigation-buttons .btn {
-        width: 100%;
-    }
-}
-
-@media (max-width: 576px) {
-    .questionnaire-container {
-        padding: 10px;
-    }
-    
-    .questionnaire-header {
-        padding: 20px;
-    }
-    
-    .section-container {
-        padding: 15px;
-    }
-    
-    .question-card {
-        padding: 15px;
-    }
-    
-    .question-number {
-        width: 25px;
-        height: 25px;
-        line-height: 25px;
-        font-size: 0.8rem;
-    }
-    
-    .question-text {
-        font-size: 1rem;
-    }
-    
-    .section-title {
-        font-size: 1.5rem;
-    }
-}
-
-/* Additional Styles for Better UX */
-.text-muted {
-    color: #6c757d !important;
-    font-size: 0.9rem;
+    font-size: 16px;
+    margin-bottom: 10px;
 }
 
 .mt-3 {
-    margin-top: 1rem !important;
+    margin-top: 20px;
 }
 
-.text-center {
-    text-align: center !important;
-}
-
-/* Loading and transition effects */
-.section-container {
-    animation: fadeIn 0.3s ease-in;
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+.btn-light {
+    background-color: #cde8e5;
+    color: #003d33;
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: none;
 }

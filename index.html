@@ -15,6 +15,12 @@
     <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  body {
+    font-family: 'Inter', sans-serif;
+  }
+</style>
 </head>
 <body>
     <div id="root"></div>
@@ -36,7 +42,7 @@
             // Questionnaire sections
             const sections = [
                 {
-                    title: "Section A: Demographic Information",
+                    title: "Section A: About You",
                     questions: [
                         { id: "age", text: "Age", type: "number", placeholder: "Enter your age" },
                         { id: "marital_status", text: "Marital Status", type: "select", options: ["Single", "Married", "Divorced", "Widowed"] },
@@ -51,7 +57,7 @@
                     ]
                 },
                 {
-                    title: "Section B: Health Status",
+                    title: "Section B: Health Details",
                     questions: [
                         { id: "height", text: "Height (cm)", type: "number", placeholder: "Enter height in cm" },
                         { id: "weight", text: "Weight (kg)", type: "number", placeholder: "Enter weight in kg" },
@@ -66,7 +72,7 @@
                     ]
                 },
                 {
-                    title: "Section C: Lifestyle Information",
+                    title: "Section C: Daily Habits",
                     questions: [
                         { id: "exercise", text: "How often do you exercise in a week?", type: "select", options: ["Never", "1–2 days", "3–5 days", "Daily"] },
                         { id: "sleep", text: "On average, how many hours do you sleep daily?", type: "number", placeholder: "Enter hours of sleep" },
@@ -81,7 +87,7 @@
                     ]
                 },
                 {
-                    title: "Section D: Behavioral Questions",
+                    title: "Section D: Beliefs & Perceptions",
                     questions: [
                         { id: "risk_worsening", text: "I believe I am at risk of worsening my PCOS symptoms without lifestyle change.", type: "likert" },
                         { id: "fertility_concern", text: "PCOS might affect my fertility or reproductive health in the future.", type: "likert" },
